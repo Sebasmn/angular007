@@ -3,10 +3,14 @@
         <div class="form-group">
             <label>Nombre</label>
             <input type="text" class="form-control" formControlName="nombre">
-            <div class="alert alert-danger" role="alert">
+            <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['nombre'].invalid && formularioCreado.controls['nombre'].dirty">
                 El nombre es requerido.
               </div>
         </div>
+        <!--mostrar el valor de la propiedad "isvalid"-->
+        Propiedad invalid: {{formularioCreado.controls['nombre'].invalid}}
+        <br/>
+        Propiedad dirty: {{formularioCreado.controls['nombre'].dirty}}
         <div class="form-group">
             <label>Correo</label>
             <input type="text" class="form-control" formControlName="correo">
@@ -27,6 +31,10 @@
                 La contraseña debe tener mínimo 6 caracteres.
             </div>
         </div>
-        <button class="btn btn-primary">Agregar</button>
+        <button [disabled]="!formularioCreado.valid" class="btn btn-primary" (click)="agregar()">Agregar</button>
     </form>
 </div>
+<p class="container text-center">Formulario valido (valid): {{formularioCreado.valid}}</p>
+<p class="container text-center">
+   Formulario value: {{formularioCreado.value | json}}
+</p>

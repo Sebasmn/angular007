@@ -28,4 +28,8 @@ export class AgregarComponent implements OnInit {
     });
   }
 
+  agregar(){
+    //obtener los valores ingresados en los inputs
+    console.log(this.formularioCreado.value); 
+  }
 }

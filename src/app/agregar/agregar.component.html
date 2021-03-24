@@ -4,8 +4,8 @@
             <label>Nombre</label>
             <input type="text" class="form-control" formControlName="nombre">
             <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['nombre'].invalid && formularioCreado.controls['nombre'].dirty">
-                El nombre es requerido.
-              </div>
+                <span *ngIf="formularioCreado.controls['nombre'].errors?.required">El nombre es requerido.</span>
+            </div>
         </div>
         <!--mostrar el valor de la propiedad "isvalid"-->
         Propiedad invalid: {{formularioCreado.controls['nombre'].invalid}}
@@ -14,10 +14,11 @@
         <div class="form-group">
             <label>Correo</label>
             <input type="text" class="form-control" formControlName="correo">
-            <div class="alert alert-danger" role="alert">
+            <!-- si el control no pasa la validacion y son datos sucios, mostrar el mensaje-->
+            <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['correo'].invalid && formularioCreado.controls['correo'].dirty">
                 El correo es requerido.
               </div>
-              <div class="alert alert-danger" role="alert">
+              <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['correo'].invalid && formularioCreado.controls['correo'].dirty">
                 El correo debe tener un formato válido.
             </div>
         </div>

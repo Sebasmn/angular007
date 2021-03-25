@@ -14,23 +14,30 @@
         <div class="form-group">
             <label>Correo</label>
             <input type="text" class="form-control" formControlName="correo">
-            <!-- si el control no pasa la validacion y son datos sucios, mostrar el mensaje-->
-            <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['correo'].invalid && formularioCreado.controls['correo'].dirty">
-                El correo es requerido.
-              </div>
-              <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['correo'].invalid && formularioCreado.controls['correo'].dirty">
-                El correo debe tener un formato válido.
+
+            <div *ngIf="formularioCreado.controls['correo'].invalid && formularioCreado.controls['correo'].dirty">
+                <!-- si el control no pasa la validacion y son datos sucios, mostrar el mensaje-->
+                <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['correo'].errors?.required">
+                    El correo es requerido.
+                </div>
+                <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['correo   '].errors?.email">
+                    El correo debe tener un formato válido.
+                </div>
             </div>
+            
         </div>
         <div class="form-group">
             <label>Contraseña</label>
             <input type="password" class="form-control" formControlName="clave">
-            <div class="alert alert-danger" role="alert">
-                La contraseña es requerida.
+            <div *ngIf="formularioCreado.controls['clave'].invalid && formularioCreado.controls['clave'].dirty">
+                <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['clave'].errors?.required">
+                    La contraseña es requerida.
+                </div>
+                <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['clave'].errors?.minlength">
+                    La contraseña debe tener mínimo 6 caracteres.
+                </div>
             </div>
-            <div class="alert alert-danger" role="alert">
-                La contraseña debe tener mínimo 6 caracteres.
-            </div>
+            
         </div>
         <button [disabled]="!formularioCreado.valid" class="btn btn-primary" (click)="agregar()">Agregar</button>
     </form>

@@ -27,7 +27,7 @@ export class AgregarComponent implements OnInit {
 
   posicionEdicion:number =  -1;
 
-  columnas:string[] = ['Nombre', 'Apellido', 'Edad', 'Correo', 'Contraseña'];
+  btnEliminar:boolean = false;
   //inyeccion de dependencias
   constructor(private formBuilder:FormBuilder) { }
 
@@ -40,9 +40,9 @@ export class AgregarComponent implements OnInit {
   crearFormulario(){
     // usar formBuilder para crear el formulario
     this.formularioCreado = this.formBuilder.group({
-      nombre: ['John', Validators.required],
+      nombre: ['', Validators.required],
       apellido: ['', Validators.required],
-      edad: ['', Validators.required],
+      edad: ['', Validators.compose([Validators.required, Validators.min(1)])],
       correo: ['', Validators.compose([Validators.required, Validators.email])],
       clave: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
     });
@@ -74,6 +74,7 @@ export class AgregarComponent implements OnInit {
 
     // cambiar la posicion del registro actual a editar
     this.posicionEdicion = -1;
+    this.btnEliminar = false;
   }
 
   editarUsuarioActual(posicion:number){
@@ -97,6 +98,7 @@ export class AgregarComponent implements OnInit {
     this.posicionEdicion = posicion;
     //ocultar el boton agregar y mostrar el boton de editar
     this.esNuevo = false;
+    this.btnEliminar = true;
   }
 
   //eliminar el registro actual

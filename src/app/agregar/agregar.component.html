@@ -15,14 +15,20 @@
             <label>Apellido</label>
             <input type="text" class="form-control" formControlName="apellido" maxlength="20" onKeypress="if ((event.keyCode != 32) && (event.keyCode < 65) || (event.keyCode > 90) && (event.keyCode < 97) || (event.keyCode > 122)) event.returnValue = false;">
             <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['apellido'].invalid && formularioCreado.controls['apellido'].dirty">
-                <span *ngIf="formularioCreado.controls['nombre'].errors?.required">El apellido es requerido.</span>
+                <span *ngIf="formularioCreado.controls['apellido'].errors?.required">El apellido es requerido.</span>
             </div>
         </div>
         <div class="form-group">
             <label>Edad</label>
             <input type="text" class="form-control" formControlName="edad" maxlength="2" onKeypress="if ((event.keyCode < 48 || event.keyCode > 57)) event.returnValue = false;">
-            <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['edad'].invalid && formularioCreado.controls['edad'].dirty">
-                <span *ngIf="formularioCreado.controls['nombre'].errors?.required">La edad es requerido.</span>
+            <div *ngIf="formularioCreado.controls['edad'].invalid && formularioCreado.controls['edad'].dirty">
+                <!-- si el control no pasa la validacion y son datos sucios, mostrar el mensaje-->
+                <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['edad'].errors?.required">
+                    La edad es requerida.
+                </div>
+                <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['edad'].errors?.min">
+                    La edad debe ser mayor a 0.
+                </div>
             </div>
         </div>
         <!--mostrar el valor de la propiedad "isvalid"
@@ -45,7 +51,7 @@
         </div>
         <div class="form-group">
             <label>Contraseña</label>
-            <input class="form-control" formControlName="clave" maxlength="20" onKeypress="if ((event.keyCode < 48) || (event.keyCode > 57) && ((event.keyCode != 32) && (event.keyCode < 65) || (event.keyCode > 90) && (event.keyCode < 97) || (event.keyCode > 122))) event.returnValue = false;">
+            <input type="password" class="form-control" formControlName="clave" maxlength="20" onKeypress="if ((event.keyCode < 48) || (event.keyCode > 57) && ((event.keyCode != 32) && (event.keyCode < 65) || (event.keyCode > 90) && (event.keyCode < 97) || (event.keyCode > 122))) event.returnValue = false;">
             <div *ngIf="formularioCreado.controls['clave'].invalid && formularioCreado.controls['clave'].dirty">
                 <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['clave'].errors?.required">
                     La contraseña es requerida.
@@ -59,7 +65,7 @@
         <br/>
         <div class="container text-center">
             <button *ngIf="esNuevo" [disabled]="!formularioCreado.valid" class="btn btn-primary" (click)="agregar()">Agregar</button>
-            <button *ngIf="!esNuevo" [disabled]="!formularioCreado.valid" class="btn btn-danger" (click)="editar()">Editar</button>
+            <button *ngIf="!esNuevo" [disabled]="!formularioCreado.valid" class="btn btn-danger" (click)="editar()">Editar</button>    
         </div>
         
     </form>
@@ -68,7 +74,7 @@
 <p class="container text-center">
    Formulario value: {{formularioCreado.value | json}}
 </p-->
-<div class="container text-center" *ngFor="let item of listaUsuarios; let posicion = index">
+<!--div class="container text-center" *ngFor="let item of listaUsuarios; let posicion = index">
     <h4>{{item.nombre}} esta en la posicion: {{posicion}}</h4>
     <p>{{item.apellido}}</p>
     <p>{{item.edad}}</p>
@@ -76,4 +82,31 @@
     <p>{{item.clave}}</p>
     <button class="btn btn-secondary" (click)="editarUsuarioActual(posicion)">Editar usuario</button>
     <button class="btn btn-danger" (click)="eliminarUsuarioActual(posicion)">Eliminar usuario</button>
-</div>
+</div-->
+<br/>
+<table class="table-fill">
+    <thead>
+        <tr>
+            <th class="text-center">Nombre</th>
+            <th class="text-center">Apellido</th>
+            <th class="text-center">Edad</th>
+            <th class="text-center">Correo</th>
+            <!--th class="text-center">Clave</th-->
+            <th class="text-center">Acción</th>
+        </tr>
+    </thead>
+    <tbody class="table-hover" *ngFor="let item of listaUsuarios; let posicion = index">
+        <tr (click)="editarUsuarioActual(posicion)">
+            <td class="text-center">{{item.nombre}}</td>
+            <td class="text-center">{{item.apellido}}</td>
+            <td class="text-center">{{item.edad}}</td>
+            <td class="text-center">{{item.correo}}</td>
+            <!--td class="text-left">{{item.clave}}</td-->
+            <td class="text-center">
+                <!--button class="btn btn-secondary" (click)="editarUsuarioActual(posicion)">Editar</button-->
+                <button class="btn btn-danger" [disabled]="btnEliminar" (click)="eliminarUsuarioActual(posicion)">Eliminar</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br/>

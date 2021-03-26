@@ -1,26 +1,43 @@
+
+<div class="page-header text-center bg-primary text-uppercase text-white">
+    <h1>Formulario</h1>
+</div>
 <div class="container mt-4">
     <form [formGroup]="formularioCreado">
         <div class="form-group">
             <label>Nombre</label>
-            <input type="text" class="form-control" formControlName="nombre">
+            <input type="text" class="form-control" formControlName="nombre" maxlength="20" onKeypress="if ((event.keyCode != 32) && (event.keyCode < 65) || (event.keyCode > 90) && (event.keyCode < 97) || (event.keyCode > 122)) event.returnValue = false;">
             <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['nombre'].invalid && formularioCreado.controls['nombre'].dirty">
                 <span *ngIf="formularioCreado.controls['nombre'].errors?.required">El nombre es requerido.</span>
             </div>
         </div>
-        <!--mostrar el valor de la propiedad "isvalid"-->
-        Propiedad invalid: {{formularioCreado.controls['nombre'].invalid}}
-        <br/>
-        Propiedad dirty: {{formularioCreado.controls['nombre'].dirty}}
+        <div class="form-group">
+            <label>Apellido</label>
+            <input type="text" class="form-control" formControlName="apellido" maxlength="20" onKeypress="if ((event.keyCode != 32) && (event.keyCode < 65) || (event.keyCode > 90) && (event.keyCode < 97) || (event.keyCode > 122)) event.returnValue = false;">
+            <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['apellido'].invalid && formularioCreado.controls['apellido'].dirty">
+                <span *ngIf="formularioCreado.controls['nombre'].errors?.required">El apellido es requerido.</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Edad</label>
+            <input type="text" class="form-control" formControlName="edad" maxlength="2" onKeypress="if ((event.keyCode < 48 || event.keyCode > 57)) event.returnValue = false;">
+            <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['edad'].invalid && formularioCreado.controls['edad'].dirty">
+                <span *ngIf="formularioCreado.controls['nombre'].errors?.required">La edad es requerido.</span>
+            </div>
+        </div>
+        <!--mostrar el valor de la propiedad "isvalid"
+            Propiedad invalid: {{formularioCreado.controls['nombre'].invalid}}
+            Propiedad dirty: {{formularioCreado.controls['nombre'].dirty}}-->
         <div class="form-group">
             <label>Correo</label>
-            <input type="text" class="form-control" formControlName="correo">
+            <input type="text" class="form-control" formControlName="correo" maxlength="30">
 
             <div *ngIf="formularioCreado.controls['correo'].invalid && formularioCreado.controls['correo'].dirty">
                 <!-- si el control no pasa la validacion y son datos sucios, mostrar el mensaje-->
                 <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['correo'].errors?.required">
                     El correo es requerido.
                 </div>
-                <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['correo   '].errors?.email">
+                <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['correo'].errors?.email">
                     El correo debe tener un formato válido.
                 </div>
             </div>
@@ -28,7 +45,7 @@
         </div>
         <div class="form-group">
             <label>Contraseña</label>
-            <input type="password" class="form-control" formControlName="clave">
+            <input class="form-control" formControlName="clave" maxlength="20" onKeypress="if ((event.keyCode < 48) || (event.keyCode > 57) && ((event.keyCode != 32) && (event.keyCode < 65) || (event.keyCode > 90) && (event.keyCode < 97) || (event.keyCode > 122))) event.returnValue = false;">
             <div *ngIf="formularioCreado.controls['clave'].invalid && formularioCreado.controls['clave'].dirty">
                 <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['clave'].errors?.required">
                     La contraseña es requerida.
@@ -39,10 +56,24 @@
             </div>
             
         </div>
-        <button [disabled]="!formularioCreado.valid" class="btn btn-primary" (click)="agregar()">Agregar</button>
+        <br/>
+        <div class="container text-center">
+            <button *ngIf="esNuevo" [disabled]="!formularioCreado.valid" class="btn btn-primary" (click)="agregar()">Agregar</button>
+            <button *ngIf="!esNuevo" [disabled]="!formularioCreado.valid" class="btn btn-danger" (click)="editar()">Editar</button>
+        </div>
+        
     </form>
 </div>
-<p class="container text-center">Formulario valido (valid): {{formularioCreado.valid}}</p>
+<!--p class="container text-center">Formulario valido (valid): {{formularioCreado.valid}}</p>
 <p class="container text-center">
    Formulario value: {{formularioCreado.value | json}}
-</p>
+</p-->
+<div class="container text-center" *ngFor="let item of listaUsuarios; let posicion = index">
+    <h4>{{item.nombre}} esta en la posicion: {{posicion}}</h4>
+    <p>{{item.apellido}}</p>
+    <p>{{item.edad}}</p>
+    <p>{{item.correo}}</p>
+    <p>{{item.clave}}</p>
+    <button class="btn btn-secondary" (click)="editarUsuarioActual(posicion)">Editar usuario</button>
+    <button class="btn btn-danger" (click)="eliminarUsuarioActual(posicion)">Eliminar usuario</button>
+</div>
